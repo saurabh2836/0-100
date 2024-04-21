@@ -1,7 +1,7 @@
-import { useState ,useMemo, useEffect, useCallback , memo} from 'react'
+// import { useState ,useMemo, useEffect, useCallback , memo} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+// import './App.css'
 
 
 
@@ -68,72 +68,110 @@ import './App.css'
 // }
 
 
-function App(){
-  // const [counter,setCounter] = useState(0);
-  // const [inputValue,setInputValue] = useState(0);
-  const [count,setCount] = useState(0);
+// function App(){
+//   // const [counter,setCounter] = useState(0);
+//   // const [inputValue,setInputValue] = useState(0);
+//   const [count,setCount] = useState(0);
 
 
-  /*
-    with help ot useMemo functionality of react 
-  */
-// let count = useMemo(()=>{
-// console.log("callled from memo");
-//   let finalCount =0;
-//   for(let i=1;i<=inputValue;i++){
-//     finalCount = finalCount +i;
-//   }
-//   return finalCount
-// },[inputValue]);
+//   /*
+//     with help ot useMemo functionality of react 
+//   */
+// // let count = useMemo(()=>{
+// // console.log("callled from memo");
+// //   let finalCount =0;
+// //   for(let i=1;i<=inputValue;i++){
+// //     finalCount = finalCount +i;
+// //   }
+// //   return finalCount
+// // },[inputValue]);
 
 
-  /*
-    with help ot useEffect functionality of react 
-  */
-// useEffect (() =>{
-//     let count = 0;
-//       for(let i=1;i<=inputValue;i++){
-//         count = count + i;
-//       }
-//      setCount(count);
-// },[inputValue])
+//   /*
+//     with help ot useEffect functionality of react 
+//   */
+// // useEffect (() =>{
+// //     let count = 0;
+// //       for(let i=1;i<=inputValue;i++){
+// //         count = count + i;
+// //       }
+// //      setCount(count);
+// // },[inputValue])
 
-//   return <div>
-//     <input onChange={function(e){
-//       setInputValue(e.target.value);
-//     }} placeholder={"Find sum of 1 to n"}/>
-//     <br/>
-//     Sum of 1 to {inputValue} is {count}
-//     <br/>
-//     <button onClick={()=> {
-//       setCounter(counter +1 );
-//     }}>Counter {counter}</button>
-//   </div>
+// //   return <div>
+// //     <input onChange={function(e){
+// //       setInputValue(e.target.value);
+// //     }} placeholder={"Find sum of 1 to n"}/>
+// //     <br/>
+// //     Sum of 1 to {inputValue} is {count}
+// //     <br/>
+// //     <button onClick={()=> {
+// //       setCounter(counter +1 );
+// //     }}>Counter {counter}</button>
+// //   </div>
 
- function inputFunction(){
-    console.log("Hi there");
- }
+//  function inputFunction(){
+//     console.log("Hi there");
+//  }
 
-// const inputFunction  = useCallback(()=>{
-//     console.log("hi there")
-// },[])
+// // const inputFunction  = useCallback(()=>{
+// //     console.log("hi there")
+// // },[])
 
- return <div>
-  <ButtonComponent inputFunction={inputFunction} />
-  <button onClick={()=>{
-    setCount(count +1);
-  }} >Click Me {count}</button>
- </div>
+//  return <div>
+//   <ButtonComponent inputFunction={inputFunction} />
+//   <button onClick={()=>{
+//     setCount(count +1);
+//   }} >Click Me {count}</button>
+//  </div>
+// }
+
+// const ButtonComponent = memo( ( { inputFunction}) => {
+//       return 
+//           <div>
+//             <button>Button Clicked</button>
+//         </div>
+// });
+
+import React, { useEffect, useState } from 'react';
+import './App.css';
+
+function App() {
+  const [render, setRender] = useState(true);
+
+  useEffect(() => {
+    // Toggle the state every 5 seconds
+    const intervalId = setInterval(() => {
+      setRender(r => !r);
+    }, 5000);
+
+    // Cleanup function: Clear the interval when the component is unmounted
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  return (
+    <>
+      {render ? <MyComponent /> : <div></div>}
+    </>
+  );
 }
 
-const ButtonComponent = memo( ( { inputFunction}) => {
-      console.log("child render");
-      return <div>
-        <button>Button Clicked</button>
-      </div>
-});
+function MyComponent() {
+  useEffect(() => {
+    console.error("Component mounted");
 
+    // Cleanup function: Log when the component is unmounted
+    return () => {
+      console.log("Component unmounted");
+    };
+  }, []);
 
+  return <div>
+    From inside MyComponent
+  </div>;
+}
 
+export default App;
 
-export default App
