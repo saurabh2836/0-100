@@ -6,8 +6,9 @@ import './App.css'
 // import {BrowserRouter,Routes,Route,useNavigate} from 'react-router-dom';
 import { useState, useContext } from 'react'
 import { CounterContext } from './context';
-import { useRecoilState, useRecoilValue,RecoilRoot } from 'recoil';
+import { useRecoilState, useRecoilValue,RecoilRoot, useRecoilValueLoadable } from 'recoil';
 import { countAtom, evenSelector } from './store/atoms/count';
+import {todosAtomFamily} from './atoms';
 
 // function App() {
 //   return (
@@ -41,57 +42,100 @@ import { countAtom, evenSelector } from './store/atoms/count';
 // </div>
 // }
 
-function App() {
+// function App() {
   
-    return (
-        <div>
-          {/* <CounterContext.Provider value={count} >
-          <Count count = {count} setCount={setCount}/>
-          </CounterContext.Provider>
-           */}
-           <RecoilRoot>
-             <Count />
-             <EvenCountRenderer/>
-           </RecoilRoot>
-         </div>
-    )
+//     return (
+//         <div>
+//           {/* <CounterContext.Provider value={count} >
+//           <Count count = {count} setCount={setCount}/>
+//           </CounterContext.Provider>
+//            */}
+//            <RecoilRoot>
+//              <Count />
+//              <EvenCountRenderer/>
+//            </RecoilRoot>
+//          </div>
+//     )
+// }
+// function Count(){
+//   return <div>
+//     <CountRenderer />
+//     <Buttons />
+//   </div>
+// }
+
+// function CountRenderer(){
+//   // const count = useContext(CounterContext);
+//   const count = useRecoilValue(countAtom);
+//   return <div>
+//     {count}
+//   </div>
+// }
+
+
+// function EvenCountRenderer(){
+//   const isEven = useRecoilValue(evenSelector);
+//     console.log("even",isEven)
+//   return <div>
+//     {isEven ? " It is even":null}
+//   </div>
+// }
+
+// function Buttons(){
+//   const [count,setCount] = useRecoilState(countAtom);
+
+//   return <div>
+//       <button onClick={()=>{
+//         setCount(count +1)
+//       }}>Increase</button>
+//       <button onClick={()=>{
+//         setCount(count -1 )
+//       }}>Decrease</button>
+//   </div>
+// }
+function App(){
+  return <RecoilRoot>
+    <Todo id={1} />
+    <Todo id={2} />
+    <Todo id={3} />
+
+  </RecoilRoot>
 }
-function Count(){
-  return <div>
-    <CountRenderer />
-    <Buttons />
-  </div>
+
+// function MainApp(){
+//   // const [count,setCount] =useState(0);
+//       const [notificationCount,setnotificationCount] = useRecoilState(notifications);
+//       // const jobsCount = useRecoilValue(notificationCount);
+//       // const notificationCount = useRecoilValue(notificationCount);
+//       // const messagingCount= useRecoilValue(notificationCount);
+//       const totalNotificationCount = useRecoilValue(totalNotificationSelector);
+
+//       // const totalNotification =useMemo(()=>{
+//       //  return networkNotificationCount + jobsCount + notificationCount+messagingCount;
+//       // },[networkNotificationCount,jobsCount,notificationCount,messagingCount])
+//   return (
+//     <>
+//           <button>Home</button>
+//           <button>My Network ({ notificationCount.network > 100  ? "99+" : notificationCount.network})</button>
+//           <button>Jobs({notificationCount.jobs > 100 ? "99+": notificationCount.jobs})</button>
+//           <button>Messaging({notificationCount.messaging > 100 ? "99+": notificationCount.messaging})</button>
+//           <button>Notification({notificationCount.notifications > 100 ? "99+": notificationCount.notifications})</button>
+//           {/* <button onClick={() => {
+//               setMessagingCount(messagingCount + 1);
+//           }}>Me</button>  */}
+//             <button >Me ({totalNotificationCount})</button> 
+//     </>
+//   )
+// }
+
+function Todo({id}){
+  const currentTodo =useRecoilValueLoadable(todosAtomFamily(id));
+  return (
+    <>
+      {currentTodo.contents.title}
+      {currentTodo.contents.description}
+      <br/>
+    </>
+  )
 }
-
-function CountRenderer(){
-  // const count = useContext(CounterContext);
-  const count = useRecoilValue(countAtom);
-  return <div>
-    {count}
-  </div>
-}
-
-
-function EvenCountRenderer(){
-  const isEven = useRecoilValue(evenSelector);
-    console.log("even",isEven)
-  return <div>
-    {isEven ? " It is even":null}
-  </div>
-}
-
-function Buttons(){
-  const [count,setCount] = useRecoilState(countAtom);
-
-  return <div>
-      <button onClick={()=>{
-        setCount(count +1)
-      }}>Increase</button>
-      <button onClick={()=>{
-        setCount(count -1 )
-      }}>Decrease</button>
-  </div>
-}
-
-
 export default App
