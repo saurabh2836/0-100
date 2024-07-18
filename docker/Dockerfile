@@ -4,6 +4,7 @@ FROM node:20
 WORKDIR /app
 
 COPY . .
+COPY prisma ./prisma/
 
 RUN npm install
 RUN npx prisma generate
